@@ -7,9 +7,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
 import { ZipCodeComponent } from './zip-code/zip-code.component';
 import { WeatherByZipFiveDaysComponent } from './weather-by-zip-five-days/weather-by-zip-five-days.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  imports:      [ BrowserModule, FormsModule, AppRoutingModule, RouterModule ],
+  imports:      [ BrowserModule, FormsModule, AppRoutingModule, RouterModule, HttpClientModule ],
   declarations: [ AppComponent, ZipCodeComponent, WeatherByZipFiveDaysComponent],
   bootstrap:    [ AppComponent ]
 })
