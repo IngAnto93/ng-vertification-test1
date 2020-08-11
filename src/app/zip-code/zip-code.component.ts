@@ -3,6 +3,7 @@ import { LocalStorageService } from '../services/local-storage.service';
 import { Constants } from 'app/constants';
 import { CurrentOpenWeatherApiResponse } from 'app/models/current-open-weather-api-response';
 import { SessionParametersService } from '../services/session-parameters.service';
+var cloneDeep = require('lodash.clonedeep');
 
 @Component({
   selector: 'app-zip-code',
@@ -12,14 +13,13 @@ import { SessionParametersService } from '../services/session-parameters.service
 
 export class ZipCodeComponent implements OnInit {
   zipCode: string;
-  zipCodes: string[];
   currentWeatherArray: CurrentOpenWeatherApiResponse[];
 
   constructor(private localStorageService: LocalStorageService,
               private sessionParametersService: SessionParametersService) { }
 
   ngOnInit() {
-    this.currentWeatherArray = this.sessionParametersService.getItems();
+    this.currentWeatherArray = cloneDeep(this.sessionParametersService.getItems());
     if (this.currentWeatherArray){
       this.loadPage();
     }
@@ -31,15 +31,14 @@ export class ZipCodeComponent implements OnInit {
 
   loadPage(){
     this.zipCode = "";
-    this.zipCodes = this.localStorageService.getZipCodesFromLocalStorage();
-    this.currentWeatherArray = this.sessionParametersService.getItems();
+    this.currentWeatherArray = cloneDeep(this.sessionParametersService.getItems());
   }
 
   loadPageFirstTime(){
     this.currentWeatherArray = [];
     this.zipCode = "";
-    this.zipCodes = this.localStorageService.getZipCodesFromLocalStorage();
-    this.zipCodes.forEach(element => {
+    let zipCodes: string[] = this.localStorageService.getZipCodesFromLocalStorage();
+    zipCodes.forEach(element => {
       this.addLocation(element, false);
     });
   }
@@ -52,10 +51,10 @@ export class ZipCodeComponent implements OnInit {
           this.currentWeatherArray.push(response);
           this.sessionParametersService.addItem(response);
           if (addToLocalStorage){
-            this.zipCodes.push(this.zipCode);
             alert(Constants.MSG_ZIP_ADDED);
           }
         }
+        this.zipCode = "";
       }
     );
   }

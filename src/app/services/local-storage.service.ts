@@ -3,7 +3,7 @@ import { Constants } from '../constants';
 import { OpenWeatherMapApiService } from '../services/open-weather-map-api.service';
 import { SessionParametersService } from '../services/session-parameters.service';
 import { CurrentOpenWeatherApiResponse } from 'app/models/current-open-weather-api-response';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 @Injectable({
@@ -56,14 +56,14 @@ export class LocalStorageService {
             if (addToLocalStorage){
               alert(Constants.MSG_ERROR_GET_CURRENT_WEATHER + ": " + zipCode);
             }
-            return undefined;
+            return of(undefined);
           }
         }
       ));
     }
     else {
       alert(Constants.MSG_ZIP_ALREADY_EXIST);
-      return undefined;
+      return of(undefined);
     }
   }
 

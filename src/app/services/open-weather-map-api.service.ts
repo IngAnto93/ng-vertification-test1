@@ -23,7 +23,7 @@ export class OpenWeatherMapApiService {
   getCurrentWeather(zipCode : string) : Observable<CurrentOpenWeatherApiResponse>{
     return this.http.get<CurrentOpenWeatherApiResponse>(
       Constants.CURRENT_WEATHER_URL + zipCode + Constants.APP_ID_PARAM + Constants.APP_ID).pipe(
-        catchError(this.handleError<CurrentOpenWeatherApiResponse>('getCurrentWeather', zipCode, null))
+        catchError(this.handleError<CurrentOpenWeatherApiResponse>('getCurrentWeather', zipCode, undefined))
       );
   }
 
