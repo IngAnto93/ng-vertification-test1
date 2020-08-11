@@ -53,7 +53,7 @@ export class LocalStorageService {
             }
           }
           else{
-            if (addToLocalStorage){
+            if (addToLocalStorage && response){
               alert(Constants.MSG_ERROR_GET_CURRENT_WEATHER + ": " + zipCode);
             }
             return of(undefined);
