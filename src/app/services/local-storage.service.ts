@@ -24,27 +24,10 @@ export class LocalStorageService {
         response => {
           if (response && response.name && response.weather[0].main && response.main.temp
               && response.main.temp_min && response.main.temp_max){
-            response.main.temp = response.main.temp - 273,15;
-            response.main.temp_min = response.main.temp_min - 273,15;
-            response.main.temp_max = response.main.temp_max - 273,15;
-            switch (response.weather[0].main){
-              case Constants.SUN : {
-                response.imgSource = Constants.IMG_SOURCE_SUN;
-                break;
-              }
-              case Constants.SNOW : {
-                response.imgSource = Constants.IMG_SOURCE_SNOW;
-                break;
-              }
-              case Constants.RAIN : {
-                response.imgSource = Constants.IMG_SOURCE_RAIN;
-                break;
-              }
-              case Constants.CLOUDS : {
-                response.imgSource = Constants.IMG_SOURCE_CLOUDS;
-                break;
-              }
-            } 
+            response.main.temp = this.openWeatherMapApiService.convertFromKelvinToCelsius(response.main.temp);
+            response.main.temp_min = this.openWeatherMapApiService.convertFromKelvinToCelsius(response.main.temp_min);
+            response.main.temp_max = this.openWeatherMapApiService.convertFromKelvinToCelsius(response.main.temp_max);
+            response.imgSource = this.openWeatherMapApiService.getWeatherIcon(response.weather[0].main); 
             if (addToLocalStorage){
               var oldItems = this.getZipCodesFromLocalStorage();
               var newItem = zipCode;
@@ -53,7 +36,9 @@ export class LocalStorageService {
             }
           }
           else{
-            if (addToLocalStorage && response){
+            //this if is for avoid double alert in case of error in http request. Indeed, this error is already catched
+            //in getCurrentWeather
+            if (response){
               alert(Constants.MSG_ERROR_GET_CURRENT_WEATHER + ": " + zipCode);
             }
             return of(undefined);

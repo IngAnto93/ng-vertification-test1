@@ -21,7 +21,7 @@ export class ZipCodeComponent implements OnInit {
   ngOnInit() {
     this.currentWeatherArray = cloneDeep(this.sessionParametersService.getItems());
     if (this.currentWeatherArray){
-      this.loadPage();
+      this.loadPage(false);
     }
     else{
       this.sessionParametersService.initializeItems();
@@ -29,9 +29,11 @@ export class ZipCodeComponent implements OnInit {
     }
   }
 
-  loadPage(){
+  loadPage(refresh: boolean){
     this.zipCode = "";
-    this.currentWeatherArray = cloneDeep(this.sessionParametersService.getItems());
+    if (refresh) {
+      this.currentWeatherArray = cloneDeep(this.sessionParametersService.getItems());
+    }
   }
 
   loadPageFirstTime(){
@@ -63,7 +65,7 @@ export class ZipCodeComponent implements OnInit {
     let response: boolean = this.localStorageService.deleteFromLocalStorage(zipCode);
     if (response){
       alert(Constants.MSG_ZIP_DELETED);
-      this.loadPage();
+      this.loadPage(true);
     }
     else {
       alert(Constants.MSG_ZIP_NOT_DELETED);
